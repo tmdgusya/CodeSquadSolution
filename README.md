@@ -59,6 +59,12 @@ public class CustomError extends Exception{
             }
         }
 
+        public static void validWord(String word) throws CustomError{
+            if(word.length() == 0){
+                throw new CustomError("문자를 입력해주세요. 문자가 입력되지 않았습니다.");
+            }
+        }       
+
 ```
 
 * 요구사항에 주어진 조건대로 유효성 검사를 진행하고, 해당 유효성 검사에 부적합할시 Error 를 Throw 하도록 설계됨. 사용로직에서는 이를 Try..Catch 를 이용해 Message 를 확인할 수 있음.
