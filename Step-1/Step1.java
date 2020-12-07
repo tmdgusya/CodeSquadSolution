@@ -8,9 +8,9 @@ class Step1 {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            char[] temp_array = word.toCharArray();
-            temp_array = moveWord(temp_array, input_direction, move_count);
-            result = new String(temp_array);
+            char[] array = word.toCharArray();
+            array = moveWord(array, input_direction, move_count);
+            result = new String(array);
             return result;
         }
         
@@ -28,8 +28,7 @@ class Step1 {
         }
 
         public static char[] moveWord(char[] array ,String input_direction, int move_count){
-            char[] temp_array = array;
-            char[] copy_array = new char[temp_array.length];
+            char[] copy_array = new char[array.length];
             int length = array.length-1;
             if(move_count < 0){
                 if(input_direction.equals("R")){
@@ -41,23 +40,23 @@ class Step1 {
                 }
             }
             if(input_direction.equals("R")){
-                for(int i = 0; i<temp_array.length; i++){
-                    int Index = i+(move_count%temp_array.length);
+                for(int i = 0; i<array.length; i++){
+                    int Index = i+(move_count%array.length);
                     if(Index > length){
-                        System.out.println("Upper : " + (((length-(i+(move_count%temp_array.length)))*-1)-1));
-                        copy_array[((length-(i+(move_count%temp_array.length)))*-1)-1] = temp_array[i];
+                        System.out.println("Upper : " + (((length-(i+(move_count%array.length)))*-1)-1));
+                        copy_array[((length-(i+(move_count%array.length)))*-1)-1] = array[i];
                     }else{
-                        System.out.println("Under : " + (i+(move_count%temp_array.length)));
-                        copy_array[i+(move_count%temp_array.length)] = temp_array[i];
+                        System.out.println("Under : " + (i+(move_count%array.length)));
+                        copy_array[i+(move_count%array.length)] = array[i];
                     }
                 }
             }else{
-                for(int i = 0; i<temp_array.length; i++){
-                    int Index = i+(move_count%temp_array.length);
+                for(int i = 0; i<array.length; i++){
+                    int Index = i+(move_count%array.length);
                     if(Index > length){
-                        copy_array[i] = temp_array[((length-(i+(move_count%temp_array.length)))*-1)-1];
+                        copy_array[i] = array[((length-(i+(move_count%array.length)))*-1)-1];
                     }else{
-                        copy_array[i] = temp_array[i+(move_count%temp_array.length)];
+                        copy_array[i] = array[i+(move_count%array.length)];
                     }
                 }
             }
