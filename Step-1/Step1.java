@@ -5,7 +5,7 @@ class Step1 {
             try {
                 validMoveCount(move_count);
                 validInputDirection(input_direction);
-            } catch (Exception e) {
+            } catch (CustomError e) {
                 System.out.println(e.getMessage());
             }
             char[] array = word.toCharArray();
@@ -43,10 +43,8 @@ class Step1 {
                 for(int i = 0; i<array.length; i++){
                     int Index = i+(move_count%array.length);
                     if(Index > length){
-                        System.out.println("Upper : " + (((length-(i+(move_count%array.length)))*-1)-1));
                         copy_array[((length-(i+(move_count%array.length)))*-1)-1] = array[i];
                     }else{
-                        System.out.println("Under : " + (i+(move_count%array.length)));
                         copy_array[i+(move_count%array.length)] = array[i];
                     }
                 }
