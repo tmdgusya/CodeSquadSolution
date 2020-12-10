@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 
 public class Step3 {
-    
-    FinalCube cube = new FinalCube();
 
     public static ArrayList<String> recogInputValue(String input){
         String[] splitWord = input.split("");
@@ -21,5 +19,10 @@ public class Step3 {
     }
 
     public static void main(String[] args) {
+        FinalCube cube = new FinalCube();
+        cube.init();
+        System.out.println();
+        cube.LrRotate(0);
+        cube.printcube();
     }
 }

@@ -333,11 +333,11 @@ B [5][2][0] B [5][2][1] B [5][2][2]
 ### 큐브 평면도 (아래 처럼 구상할 예)
 
 ```
-    W[0]
-    |
+        W[0]
+        |
 G[4] - Y[2] - B[5] - O[3]
-    |
-    R[1]
+        |
+        R[1]
 ```
 
 ### 움직임시 인덱싱 변경 
@@ -506,8 +506,8 @@ cube[0][1][1] = cube[0][2][1]
 cube[0][2][2] = cube[0][2][2]
 
 cube[0][2][0] = cube[0][0][2]
-cube[0][2][0] = cube[0][1][2]
-cube[0][2][0] = cube[0][2][2]
+cube[0][2][1] = cube[0][1][2]
+cube[0][2][2] = cube[0][2][2]
 
 cube[0][0][0] = tmp1
 cube[0][1][1] = tmp2
@@ -577,6 +577,135 @@ System.out.println(time + "초");
 
 * 맞출경우 축하메세지 출력 "모든 면을 다맞추셨습니다 당신은 천재!"
 
+### 함수설명
+
+```java
+
+    // 이 함수들이 호출되기전 키값들로 0 이 들어올지 2가 들어올지 걸러야됨 그건 main method 에서 진행
+    //U 과 B 의 경우는 가운 자리만 0 이냐 2이냐 차이므로, 같은 함수로 쓰고, L일때는 0 대입 R 일때는 2 대입식으로 구현
+    
+    public void URotate(int index){
+        if(index == 0){
+            FrRotate(0);
+        }else{
+            FrRotate(1);
+        }
+        char[] temp = new char[3];
+        for(int i = 0; i<3; i++){temp[i] = cube[4][index][i];}
+        for(int i = 0; i<3; i++){cube[4][index][i] = cube[2][index][i];}
+        for(int i = 0; i<3; i++){cube[2][index][i] = cube[5][index][i];}
+        for(int i = 0; i<3; i++){cube[5][index][i] = cube[3][index][i];}
+        for(int i = 0; i<3; i++){cube[3][index][i] = temp[i];}
+    }
+
+    public void UrRotate(int index){
+        if(index == 0){
+            FRotate(0);
+        }else{
+            FRotate(1);
+        }
+        char[] temp = new char[3];
+        for(int i = 0; i<3; i++){temp[i] = cube[5][index][i];}
+        for(int i = 0; i<3; i++){cube[5][index][i] = cube[2][index][i];}
+        for(int i = 0; i<3; i++){cube[2][index][i] = cube[4][index][i];}
+        for(int i = 0; i<3; i++){cube[4][index][i] = cube[3][index][i];}
+        for(int i = 0; i<3; i++){cube[3][index][i] = temp[i];}
+    }
+
+    //L 과 R 의 경우는 마지막 자리만 0 이냐 2이냐 차이므로, 같은 함수로 쓰고, L일때는 0 대입 R 일때는 2 대입식으로 구현
+    //phase 는 각 면을 나타냄! phase 를 사용하는 이유는 0일때는 2차 스케치 로직 대로지만, 다른 면만 회전될 경우가 필요함
+    public void LRotate(int index){
+        FRotate(4);
+        char[] temp = new char[3];
+        for(int i = 0; i<3; i++){temp[i] = cube[1][i][index];}
+        for(int i = 0; i<3; i++){cube[1][i][index] = cube[2][i][index];}
+        for(int i = 0; i<3; i++){cube[2][i][index] = cube[0][i][index];}
+        for(int i = 0; i<3; i++){cube[0][i][index] = cube[3][i][index];}
+        for(int i = 0; i<3; i++){cube[3][i][index] = temp[i];}
+    }
+
+    public void LrRotate(int index){
+        FrRotate(4);
+        char[] temp = new char[3];
+        for(int i = 0; i<3; i++){temp[i] = cube[0][i][index];}
+        for(int i = 0; i<3; i++){cube[0][i][index] = cube[2][i][index];}
+        for(int i = 0; i<3; i++){cube[2][i][index] = cube[1][i][index];}
+        for(int i = 0; i<3; i++){cube[1][i][index] = cube[3][i][index];}
+        for(int i = 0; i<3; i++){cube[3][i][index] = temp[i];}
+    }
+
+    //F 나 F` 이 발동될때는 기존 [1]-[2]-[0]-[3] 이아닌 [4]-[0]-[5]-[1] 로 도는 로직도 필요함
+    //마지막 index 0 2 l-> 아래 L` 위
+    public void sideLRotate(int index){
+        char[] temp = new char[3];
+        for(int i = 0; i<3; i++){temp[i] = cube[1][i][index];}
+        for(int i = 0; i<3; i++){cube[1][i][index] = cube[4][i][index];}
+        for(int i = 0; i<3; i++){cube[4][i][index] = cube[0][i][index];}
+        for(int i = 0; i<3; i++){cube[0][i][index] = cube[5][i][index];}
+        for(int i = 0; i<3; i++){cube[5][i][index] = temp[i];}
+    }
+
+    public void sideLrRotate(int index){
+        char[] temp = new char[3];
+        for(int i = 0; i<3; i++){temp[i] = cube[5][i][index];}
+        for(int i = 0; i<3; i++){cube[5][i][index] = cube[0][i][index];}
+        for(int i = 0; i<3; i++){cube[0][i][index] = cube[4][i][index];}
+        for(int i = 0; i<3; i++){cube[4][i][index] = cube[1][i][index];}
+        for(int i = 0; i<3; i++){cube[1][i][index] = temp[i];}
+    }
+
+    //F 과 B 의 경우는 첫자리만 0 이냐 3이냐 차이므로, 같은 함수로 쓰고, L일때는 F 대입 B 일때는 3 대입식으로 구현
+    //어떤 면이 시계 방향으로 돌지 입력받아야됨
+    //앞면일 경우 0 뒷면일 경우 3 근데 phase 를 받는이유는 U 나 다른 rotate 메소드 호출시 시계 혹은 반시계로 도는 phase 가 있기 때문
+    //문제가 발생함.. 한면에서만 돌리는건 돌리고나서 끝 배열이 도는데 영향을 받음 따라서 따로돌아야됨
+    public void FRotate(int phase){
+        char[][][] tempArray = new char[6][3][3];
+        deepClone(tempArray, cube);
+        if(phase == 2){
+            subLrRotate(2);
+        }else if(phase == 3){
+            subLrRotate(0);
+        }
+        char[] temp = new char[3];
+        for(int i = 0; i<3; i++){temp[i] = cube[phase][i][2];}
+        for(int i = 0; i<3; i++){tempArray[phase][i][2] = cube[phase][0][i];}
+        for(int i = 0; i<3; i++){tempArray[phase][0][i] = cube[phase][i][0];}       
+        for(int i = 0; i<2; i++){tempArray[phase][i][0] = cube[phase][2][i];} 
+        for(int i = 0; i<3; i++){tempArray[phase][2][2-i] = temp[i];}
+        deepClone(cube, tempArray);
+    }
+
+    public void FrRotate(int phase){
+        if(phase == 2){
+            subLRotate(2);
+        }else if(phase == 3){
+            subLRotate(0);
+        }
+        char[] temp = new char[3];
+        for(int i = 0; i<3; i++){temp[i] = cube[phase][i][0];}
+        for(int i = 0; i<3; i++){cube[phase][i][0] = cube[phase][0][i];}
+        for(int i = 0; i<3; i++){cube[phase][0][i] = cube[phase][i][2];}
+        for(int i = 0; i<3; i++){cube[phase][i][2] = cube[phase][2][i];}
+        for(int i = 0; i<3; i++){cube[phase][i][2-i] = temp[i];}
+    }
+}
+
+```
+
+* 위에서 설명했듯이 구현과정 자체에서는 생각하지 못했던 것들이 코드를 적다보니 생겨났음, 예를 들면 F 를 실행할경우
+앞면과 맞닿아있는 양옆위아래면들이 Rrotate 가 발생해야 되어야 한다. 그런 부분들을 적느라 생각보다, 기존 설계 사고에서 추가된 함수들이 많다. 그리고 Frotate 같은 경우는 설계 자체가 실수로 잘못해서, 코드를 작성하면서 수정을 하였다.
+
+* L 과 R 은 index 로 구분가능하므로, R의 발생시킬경우 마지막 index 값이 2로 L` 를 발생시키면 되므로, main index 혹은 별도의 키를 인지하는 과정을 통해 해당 부분은 함수에 인덱스를 넘겨줄 것이다.
+
+* sideLRotate() 관련 함수는 위에서 말한 F 혹은 B 가 발생했을시 발동하는 함수이다. 양옆 사이드에서 돈다고 생각되어 
+side 를 붙여주었다.
+
+### 코드 스케치 과정
+* 0차 스케치 : 코드 설계
+* 1차 스케치 : 코드 설계 / 주요기능 코드 작성
+* 2차 스케치 : 주요 기능 코드 작성
+* 3차 스케치 : 가동시간 및 랜덤 / SPEC 함수 작성
+* 리팩토링!
 
 ### 고려사항
 
