@@ -584,7 +584,7 @@ System.out.println(time + "초");
     // 이 함수들이 호출되기전 키값들로 0 이 들어올지 2가 들어올지 걸러야됨 그건 main method 에서 진행
     //U 과 B 의 경우는 가운 자리만 0 이냐 2이냐 차이므로, 같은 함수로 쓰고, L일때는 0 대입 R 일때는 2 대입식으로 구현
     
-    public void URotate(int index){
+private void URotate(int index){
         if(index == 0){
             FrRotate(0);
         }else{
@@ -598,7 +598,7 @@ System.out.println(time + "초");
         for(int i = 0; i<3; i++){cube[3][index][i] = temp[i];}
     }
 
-    public void UrRotate(int index){
+    private void UrRotate(int index){
         if(index == 0){
             FRotate(0);
         }else{
@@ -614,7 +614,7 @@ System.out.println(time + "초");
 
     //L 과 R 의 경우는 마지막 자리만 0 이냐 2이냐 차이므로, 같은 함수로 쓰고, L일때는 0 대입 R 일때는 2 대입식으로 구현
     //phase 는 각 면을 나타냄! phase 를 사용하는 이유는 0일때는 2차 스케치 로직 대로지만, 다른 면만 회전될 경우가 필요함
-    public void LRotate(int index){
+    private void LRotate(int index){
         FRotate(4);
         char[] temp = new char[3];
         for(int i = 0; i<3; i++){temp[i] = cube[1][i][index];}
@@ -624,7 +624,7 @@ System.out.println(time + "초");
         for(int i = 0; i<3; i++){cube[3][i][index] = temp[i];}
     }
 
-    public void LrRotate(int index){
+    private void LrRotate(int index){
         FrRotate(4);
         char[] temp = new char[3];
         for(int i = 0; i<3; i++){temp[i] = cube[0][i][index];}
@@ -636,7 +636,7 @@ System.out.println(time + "초");
 
     //F 나 F` 이 발동될때는 기존 [1]-[2]-[0]-[3] 이아닌 [4]-[0]-[5]-[1] 로 도는 로직도 필요함
     //마지막 index 0 2 l-> 아래 L` 위
-    public void sideLRotate(int index){
+    private void sideLRotate(int index){
         char[] temp = new char[3];
         for(int i = 0; i<3; i++){temp[i] = cube[1][i][index];}
         for(int i = 0; i<3; i++){cube[1][i][index] = cube[4][i][index];}
@@ -645,7 +645,7 @@ System.out.println(time + "초");
         for(int i = 0; i<3; i++){cube[5][i][index] = temp[i];}
     }
 
-    public void sideLrRotate(int index){
+    private void sideLrRotate(int index){
         char[] temp = new char[3];
         for(int i = 0; i<3; i++){temp[i] = cube[5][i][index];}
         for(int i = 0; i<3; i++){cube[5][i][index] = cube[0][i][index];}
@@ -658,13 +658,13 @@ System.out.println(time + "초");
     //어떤 면이 시계 방향으로 돌지 입력받아야됨
     //앞면일 경우 0 뒷면일 경우 3 근데 phase 를 받는이유는 U 나 다른 rotate 메소드 호출시 시계 혹은 반시계로 도는 phase 가 있기 때문
     //문제가 발생함.. 한면에서만 돌리는건 돌리고나서 끝 배열이 도는데 영향을 받음 따라서 따로돌아야됨
-    public void FRotate(int phase){
+    private void FRotate(int phase){
         char[][][] tempArray = new char[6][3][3];
         deepClone(tempArray, cube);
         if(phase == 2){
-            subLrRotate(2);
+            sideLrRotate(2);
         }else if(phase == 3){
-            subLrRotate(0);
+            sideLrRotate(0);
         }
         char[] temp = new char[3];
         for(int i = 0; i<3; i++){temp[i] = cube[phase][i][2];}
@@ -675,11 +675,11 @@ System.out.println(time + "초");
         deepClone(cube, tempArray);
     }
 
-    public void FrRotate(int phase){
+    private void FrRotate(int phase){
         if(phase == 2){
-            subLRotate(2);
+            sideLRotate(2);
         }else if(phase == 3){
-            subLRotate(0);
+            sideLRotate(0);
         }
         char[] temp = new char[3];
         for(int i = 0; i<3; i++){temp[i] = cube[phase][i][0];}
@@ -688,7 +688,6 @@ System.out.println(time + "초");
         for(int i = 0; i<3; i++){cube[phase][i][2] = cube[phase][2][i];}
         for(int i = 0; i<3; i++){cube[phase][i][2-i] = temp[i];}
     }
-}
 
 ```
 
@@ -700,13 +699,179 @@ System.out.println(time + "초");
 * sideLRotate() 관련 함수는 위에서 말한 F 혹은 B 가 발생했을시 발동하는 함수이다. 양옆 사이드에서 돈다고 생각되어 
 side 를 붙여주었다.
 
-### 코드 스케치 과정
-* 0차 스케치 : 코드 설계
-* 1차 스케치 : 코드 설계 / 주요기능 코드 작성
-* 2차 스케치 : 주요 기능 코드 작성
-* 3차 스케치 : 가동시간 및 랜덤 / SPEC 함수 작성
-* 리팩토링!
+* rotate 즉 회전 함수와 관련된 함수를 모두 private 으로 캡슐화 처리하였음, 내부 로직을 클라이언트가 알수없고, 클라이언트는 클라이언트의 역할인 키 입력만 할수있도록 함
 
+
+### 시간함수
+
+```java
+
+private Long start(){
+        long start = System.currentTimeMillis();
+        return start;
+    }
+
+    private Long endTime(){
+        long end = System.currentTimeMillis();
+        return end;
+    }
+
+    private Long getDurationGameTime(Long start, Long end){
+        long duration = (long) ((end - start) / 1000.0);
+        return duration;
+    }
+
+```
+
+* 위에서 설명한 내용을 그대로 구현하였다.
+
+### Random 함수 설명
+
+```java
+
+ public void random(){
+        String[] actionArray = {"U", "U`","B","B`","L","L`","F","F`","D","D`"};
+        int selectActionKey;
+        Random random = new Random();
+        for(int i = 0; i<10; i++){
+            selectActionKey = random.nextInt(10);
+            this.rotationCube(actionArray[selectActionKey]);
+        } 
+    }
+
+```
+
+* 랜덤으로 10번은 방향키를 입력하여 섞어서 나온다.
+
+### 유효성 검사 코드
+
+```java
+  private void validateKey(String key) throws CustomError{
+        if(!(key.equals("U") || key.equals("U`") || key.equals("R") || key.equals("R`") || key.equals("F`") || key.equals("F") || key.equals("B`") || key.equals("B") || key.equals("L") || key.equals("L`") || key.equals("B") || key.equals("B`") || key.equals("Q") || key.equals("q"))){
+            throw new CustomError("올바른 키를 입력하지 않았습니다.");
+        }
+    }
+```
+
+* 입력할 수 있는 키에 대한 유효성 검사를 진행한다.
+
+### SPEC(큐브를 맞췄는지) 검증 함수
+
+```java
+private boolean spec(){
+        boolean clear = false;
+        int clearPhaseCount = 0;
+        int clearCount = 0;
+        char word; 
+        for (int i = 0; i < 6; i++) {
+            word = cube[i][0][0];
+            clearPhaseCount = 0;
+            for (int j = 0; j < 3; j++) {
+                for(int z = 0; z< 3; z++){
+                    if(word == cube[i][j][z]){
+                        clearPhaseCount++;
+                    }
+                }
+            }
+            if(clearPhaseCount == 9){
+                clearCount++;
+            }
+        }
+        if(clearCount == 6 && this.rotateCount > 1){
+            clear = true;
+        }
+        return clear;
+    }
+```
+
+* 각 면의 첫 배열을 수집한뒤 해당 면의 단어들이, 수집한 단어와 동일한지 확인한뒤 모두 동일하다면 true 를 뱉는다.
+
+### 메인 동작 함수
+
+```java
+    public void rotationCube(String key){
+        try{
+            this.validateKey(key);
+            this.rotateCount++;
+            isGameStart = true;
+        }catch(CustomError er){
+            System.out.println(er.getMessage());
+            this.rotateCount--;
+            isGameStart = false;
+        }
+        if(this.isGameStart){
+            switch (key){
+                case "U":
+                    this.URotate(0);
+                break;
+                case "U`" :
+                    this.UrRotate(0);
+                    break;
+                case "D":
+                    this.UrRotate(2);
+                    break;
+                case "D`":
+                    this.URotate(2);
+                    break;
+                case "R":
+                    this.LrRotate(0);
+                    break;
+                case "R`":
+                    this.LRotate(0);
+                    break;
+                case "L": 
+                    this.LRotate(0);
+                    break;
+                case "L`":
+                    this.LrRotate(0);
+                    break;
+                case "F":
+                    this.FRotate(0);
+                    break;
+                case "F`":
+                    this.FrRotate(0);
+                    break;
+                case "B":
+                    this.FrRotate(3);
+                    break;
+                case "B`":
+                    this.FRotate(3);
+                    break;
+                case "q":
+                case "Q":
+                    this.endTime = this.endTime();
+                    this.duratinGameTime = this.getDurationGameTime(this.startTime, this.endTime);
+                    System.out.println("게임 플레이타임 : "+ this.duratinGameTime +"초");
+                    System.out.println("큐브 회전횟수 : " + (this.rotateCount-1) + "회");
+                    System.out.println("게임을 종료합니다....");
+                    System.exit(0);
+                    break;
+            }
+            this.printcube();
+            if(spec()){
+                System.out.println("큐브를 맞추셨습니다! 당신은 천재!");
+                this.endTime = this.endTime();
+                this.duratinGameTime = this.getDurationGameTime(this.startTime, this.endTime);
+                System.out.println("게임 플레이타임 : "+ this.duratinGameTime +"초");
+                System.out.println("큐브 회전횟수 : " + (this.rotateCount-1) + "회");
+                System.out.println("게임을 종료합니다....");
+                System.exit(0);
+            }
+        }
+ 
+    }
+
+```
+* 일단 큐브를 init() 시키는 과정에서 처음 시작시간을 측정하고, 큐브 게임을 종료하거나 맞췄을때를 종료 시점으로 하여 시간을 계산하였다.
+* rotationCount 는 회전횟수 및 첫 회전전에 검증 함수가 돌아가지 않도록 하기 위해 사용했다.
+
+
+### 코드 스케치 과정
+* ~~0차 스케치 : 코드 설계~~
+* ~~1차 스케치 : 코드 설계 / 주요기능 코드 작성~~
+* ~~2차 스케치 : 주요 기능 코드 작성~~
+* ~~3차 스케치 : 가동시간 및 랜덤 / SPEC 함수 작성~~
+* 리팩토링!
 ### 고려사항
 
 * ~~큐브를 객체화 시켜 싱글톤 클래스로 반환해줄까 고민중~~ 
@@ -714,3 +879,11 @@ side 를 붙여주었다.
 * ~~전역변수를 쓰지않고, 객체를 리턴받는다면 큐브 같은경우는 회전을 다수 해야되기때문에 객체를 싱글톤으로 하나로 반환하는것도 좋을것 같다. 객체를 생성하지 않고 한 객체만 쓰므로!~~
 
 * Singleton Pattern 으로 설계하는것을 고민하였으나, 큐브를 여러 사용자가 쓸경우 하나의 큐브 객체를 주면 안되는 상황이므로 잘못 고민했다고 판단, 사용자 하나마다 큐브 객체를 주어주는 것으로 설정함.
+
+### 설계하며 느낀점 && 배운점
+
+* 최대한 Step3.java 는 클라이언트 측이라고 생각해서 Class 에서 캡슐화 하려고 노력했다.
+
+* 그리고 큐브의 역할을 최대한 큐브 Class 내에서 처리하려고 노력했다. 처음에는 Main 에서 모든 걸 진행하려 했지만 객체 지향 적으로 코드를 적기 위해서는 큐브를 클래스화 처리 한뒤, 인스턴스로 이용할 수 있도록 하고 싶었다. 그리고 캡슐화를 하여 사용자가 내부 로직을 몰라도 키 입력만으로 동작할 수 있도록 처리했다.
+
+* 아직 리팩토링 과정이 남아있다. 코드를 더욱더 개선하거나 확장성을 늘려주고 싶다.

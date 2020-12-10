@@ -1,8 +1,8 @@
 import java.util.ArrayList;
-
+import java.util.Scanner;
 public class Step3 {
 
-    public static ArrayList<String> recogInputValue(String input){
+    private static ArrayList<String> recogInputValue(String input){
         String[] splitWord = input.split("");
         ArrayList<String> actionList = new ArrayList<>();
         for(int i = 0; i < splitWord.length; i++) {
@@ -20,9 +20,19 @@ public class Step3 {
 
     public static void main(String[] args) {
         FinalCube cube = new FinalCube();
+        Scanner scan = new Scanner(System.in);
+        ArrayList<String> actionQueue = new ArrayList<>();
+        String key;
         cube.init();
-        System.out.println();
-        cube.LrRotate(0);
-        cube.printcube();
+        while(true){
+            System.out.print("CUBE > ");
+            key = scan.nextLine();
+            actionQueue = recogInputValue(key);
+            actionQueue.forEach((action) -> {
+                cube.rotationCube(action);
+            });  
+        }
     }
+
+
 }
