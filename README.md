@@ -149,6 +149,9 @@ i 번의 Index 의 Value 가 해당 값만큼 이동해야 하므로, i 의 위�
 3. Key 입력은 switch 문을 이용해, 설계한다. (각 Case 별로 설계
 
 4. 아래의 인덱스로 설계한다.
+
+5. 처음에 큐브를 클래스화 처리하여 사용하지 않았으나, 만약 여러 사용자가 사용한다면 큐브가 여러개 필요할 것이라 판단<br>
+따라서 큐브를 객체화 시킨뒤, 유효성 검증 이나 내부 동작 함수는 private 처리하여 외부에서 어떻게 검증하는지 알수 없도록함. 
 ```
 [n][0] 의 인덱스를 가짐 / 가장 우측 [0][array[0].length-1] / 상단 [0][n] / 하단 [array.length-1][n]
 ```
@@ -219,7 +222,7 @@ i 번의 Index 의 Value 가 해당 값만큼 이동해야 하므로, i 의 위�
 
 ```java
 
-public static void validateKey(String key) throws CustomError{
+private void validateKey(String key) throws CustomError{
         if(!(key.equals("U") || key.equals("U`") || key.equals("R") || key.equals("R`") || key.equals("L") || key.equals("L`") || key.equals("B") || key.equals("B`"))){
             throw new CustomError("올바른 키를 입력하지 않았습니다. 프로그램이 종료됩니다.");
         }
