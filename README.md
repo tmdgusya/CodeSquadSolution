@@ -1,3 +1,17 @@
+# Git 이용과정
+
+1. 각 브랜치 마다 Step 별로 작업한다. 브랜치 NAME 은 Step-1 ... Step-n 이런식으로
+
+2. 브랜치별로 Issue 는 "#Step-worknum-Cause" 로 작성한다.
+
+3. 브랜치에서 작업 완료 후 각 브랜치로 Push 한뒤 Master 가 Merge Request를 검토한뒤 Main Branch 로 Merge 된다.
+
+4. Main Branch 에서 remote branch 와 시점을 맞춘뒤 rebase를 진행한다. 
+
+5. 각 Branch 는 Master로 부터 git pull rebase main 으로 최신 코드를 주입받는다.
+
+
+
 # 각 단계별 풀이과정
 
 # 전체 스텝별 코드 작성 및 공용 Class 설명
