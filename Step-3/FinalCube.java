@@ -11,6 +11,7 @@ public class FinalCube {
     private int rotateCount = 1;
     private boolean isGameStart = true;
     private String[] actionArray = {"U", "U`","B","B`","L","L`","F","F`","D","D`","Q","Q`"};
+    private int matchedPhaseCount;
 
     public FinalCube(){init();}
 
@@ -113,7 +114,6 @@ public class FinalCube {
                 getGameTime();
             }
         }
- 
     }
 
     private void getGameTime() {
@@ -149,12 +149,12 @@ public class FinalCube {
     }
 
     public void random(){
-        String[] actionArray = {"U", "U`","B","B`","L","L`","F","F`","D","D`"};
+        String[] inputKey = {"U", "U`","B","B`","L","L`","F","F`","D","D`"};
         int selectActionKey;
         Random random = new Random();
         for(int i = 0; i<10; i++){
             selectActionKey = random.nextInt(10);
-            this.rotationCube(actionArray[selectActionKey]);
+            this.rotationCube(inputKey[selectActionKey]);
         } 
     }
 
@@ -269,20 +269,20 @@ public class FinalCube {
 
     private boolean spec(){
         boolean clear = false;
-        int clearPhaseCount = 0;
+        matchedPhaseCount = 0;
         int clearCount = 0;
         char word; 
         for (int i = 0; i < 6; i++) {
             word = cube[i][0][0];
-            clearPhaseCount = 0;
+            matchedPhaseCount = 0;
             for (int j = 0; j < 3; j++) {
                 for(int z = 0; z< 3; z++){
                     if(word == cube[i][j][z]){
-                        clearPhaseCount++;
+                        matchedPhaseCount++;
                     }
                 }
             }
-            if(clearPhaseCount == 9){
+            if(matchedPhaseCount == 9){
                 clearCount++;
             }
         }
