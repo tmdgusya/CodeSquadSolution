@@ -746,8 +746,9 @@ private Long start(){
 ### 유효성 검사 코드
 
 ```java
-  private void validateKey(String key) throws CustomError{
-        if(!(key.equals("U") || key.equals("U`") || key.equals("R") || key.equals("R`") || key.equals("F`") || key.equals("F") || key.equals("B`") || key.equals("B") || key.equals("L") || key.equals("L`") || key.equals("B") || key.equals("B`") || key.equals("Q") || key.equals("q"))){
+ private void validateKey(String key) throws CustomError{
+        System.out.println("key = " + key);
+        if (!Arrays.asList(actionArray).contains(key)) {
             throw new CustomError("올바른 키를 입력하지 않았습니다.");
         }
     }
@@ -871,7 +872,7 @@ private boolean spec(){
 * ~~1차 스케치 : 코드 설계 / 주요기능 코드 작성~~
 * ~~2차 스케치 : 주요 기능 코드 작성~~
 * ~~3차 스케치 : 가동시간 및 랜덤 / SPEC 함수 작성~~
-* 리팩토링!
+* ~~리팩토링!~~
 ### 고려사항
 
 * ~~큐브를 객체화 시켜 싱글톤 클래스로 반환해줄까 고민중~~ 

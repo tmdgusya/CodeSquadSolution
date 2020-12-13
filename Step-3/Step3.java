@@ -23,7 +23,6 @@ public class Step3 {
         Scanner scan = new Scanner(System.in);
         ArrayList<String> actionQueue = new ArrayList<>();
         String key;
-        cube.init();
         while(true){
             System.out.print("CUBE > ");
             key = scan.nextLine();

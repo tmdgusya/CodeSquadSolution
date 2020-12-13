@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 import java.util.ArrayList;
 public class FinalCube {
@@ -9,8 +10,9 @@ public class FinalCube {
     private Long duratinGameTime;
     private int rotateCount = 1;
     private boolean isGameStart = true;
+    private String[] actionArray = {"U", "U`","B","B`","L","L`","F","F`","D","D`","Q","Q`"};
 
-    public FinalCube(){}
+    public FinalCube(){init();}
 
     public char[][][] getCube(){
         return cube;
@@ -46,7 +48,8 @@ public class FinalCube {
     }
 
     private void validateKey(String key) throws CustomError{
-        if(!(key.equals("U") || key.equals("U`") || key.equals("R") || key.equals("R`") || key.equals("F`") || key.equals("F") || key.equals("B`") || key.equals("B") || key.equals("L") || key.equals("L`") || key.equals("B") || key.equals("B`") || key.equals("Q") || key.equals("q"))){
+        System.out.println("key = " + key);
+        if (!Arrays.asList(actionArray).contains(key)) {
             throw new CustomError("올바른 키를 입력하지 않았습니다.");
         }
     }
@@ -101,31 +104,26 @@ public class FinalCube {
                     break;
                 case "q":
                 case "Q":
-                    this.endTime = this.endTime();
-                    this.duratinGameTime = this.getDurationGameTime(this.startTime, this.endTime);
-                    System.out.println("게임 플레이타임 : "+ this.duratinGameTime +"초");
-                    System.out.println("큐브 회전횟수 : " + (this.rotateCount-1) + "회");
-                    System.out.println("게임을 종료합니다....");
-                    System.exit(0);
+                    getGameTime();
                     break;
             }
             this.printcube();
             if(spec()){
                 System.out.println("큐브를 맞추셨습니다! 당신은 천재!");
-                this.endTime = this.endTime();
-                this.duratinGameTime = this.getDurationGameTime(this.startTime, this.endTime);
-                System.out.println("게임 플레이타임 : "+ this.duratinGameTime +"초");
-                System.out.println("큐브 회전횟수 : " + (this.rotateCount-1) + "회");
-                System.out.println("게임을 종료합니다....");
-                System.exit(0);
+                getGameTime();
             }
         }
  
     }
 
-
-    
-
+    private void getGameTime() {
+        this.endTime = this.endTime();
+        this.duratinGameTime = this.getDurationGameTime(this.startTime, this.endTime);
+        System.out.println("게임 플레이타임 : " + this.duratinGameTime + "초");
+        System.out.println("큐브 회전횟수 : " + (this.rotateCount - 1) + "회");
+        System.out.println("게임을 종료합니다....");
+        System.exit(0);
+    }
 
 
     private void printcube(){
